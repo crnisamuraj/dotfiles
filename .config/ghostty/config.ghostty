@@ -1,4 +1,4 @@
-keybind = global:super+backquote=toggle_quick_terminal
+keybind = global:cmd+option=toggle_quick_terminal
 
 macos-hidden = always
 
