@@ -1,0 +1,13 @@
+macos-hidden = always
+
+background-opacity = 0.66
+background-blur = true
+
+# quick terminal
+quick-terminal-position = top
+
+# height, width
+quick-terminal-size = 39%, 66%
+
+keybind = global:super+grave_accent=toggle_quick_terminal
+quick-terminal-animation-duration = 0
