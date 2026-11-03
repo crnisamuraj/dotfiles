@@ -1,13 +1,14 @@
+keybind = global:super+backquote=toggle_quick_terminal
+
 macos-hidden = always
 
 background-opacity = 0.66
 background-blur = true
 
 # quick terminal
-quick-terminal-position = top
-
 # height, width
 quick-terminal-size = 39%, 66%
-
-keybind = global:super+backquote=toggle_quick_terminal
+quick-terminal-position = top
 quick-terminal-animation-duration = 0
+quick-terminal-autohide = true
+quick-terminal-space-behavior = move
