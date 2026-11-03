@@ -18,7 +18,19 @@ destination directory:
 ./install.sh --target /path/to/destination
 ```
 
-The installer copies all repository contents, including hidden and untracked
+To install only a specific file or directory, pass its path relative to the
+repository root. Its path under the destination stays the same:
+
+```sh
+./install.sh --only .config/ghostty --dry-run
+./install.sh --only .config/ghostty
+./install.sh --only .codex/AGENTS.md --target /path/to/destination
+```
+
+The usual exclusions still apply. `--only` does not follow symlinks in parent
+directories; a selected symlink itself is copied as a symlink.
+
+By default, the installer copies all repository contents, including hidden and untracked
 files, except `.git`, `.DS_Store`, and the root `README.md`, `.gitignore`, and
 `install.sh`. Nested files with those last three names are copied normally.
 Git ignore rules do not determine what gets installed.

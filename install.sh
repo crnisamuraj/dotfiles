@@ -3,13 +3,14 @@ set -euo pipefail
 
 usage() {
     cat <<'EOF'
-Usage: ./install.sh [--dry-run] [--target DIR]
+Usage: ./install.sh [--dry-run] [--target DIR] [--only PATH]
 
 Copy this repository's contents into your home directory, merging directories
 and overwriting matching files. Destination-only files are never deleted.
 
   --dry-run     Show planned changes without writing anything.
   --target DIR  Use an existing directory instead of $HOME.
+  --only PATH   Install only this repository-relative file or directory.
   -h, --help    Show this help.
 
 Excluded: .git, .DS_Store, and the root README.md, .gitignore, and install.sh.
@@ -23,6 +24,7 @@ die() {
 }
 
 target_dir=${HOME:-}
+only_path=
 dry_run=()
 
 while (($#)); do
@@ -34,6 +36,12 @@ while (($#)); do
         --target)
             (($# >= 2)) && [[ -n $2 ]] || die '--target requires a directory.'
             target_dir=$2
+            shift 2
+            ;;
+        --only)
+            (($# >= 2)) && [[ -n $2 ]] || die '--only requires a repository-relative path.'
+            [[ -z $only_path ]] || die '--only can only be specified once.'
+            only_path=$2
             shift 2
             ;;
         -h|--help)
@@ -58,7 +66,41 @@ case "$target_dir/" in
     "$repo_dir/"*) die 'The target cannot be the repository or a directory inside it.' ;;
 esac
 
-printf 'Source: %s\nTarget: %s\n' "$repo_dir" "$target_dir"
+source_path="$repo_dir/"
+relative=()
+if [[ -n $only_path ]]; then
+    [[ $only_path != /* ]] || die '--only must be a repository-relative path.'
+    while [[ $only_path == ./* ]]; do only_path=${only_path#./}; done
+    while [[ $only_path == */ ]]; do only_path=${only_path%/}; done
+    [[ -n $only_path && $only_path != . ]] || die '--only requires a file or directory within the repository.'
+
+    # Reject traversal and excluded components, and never traverse symlinks.
+    remaining=$only_path
+    current=$repo_dir
+    first=1
+    while :; do
+        component=${remaining%%/*}
+        [[ -n $component && $component != . && $component != .. ]] || die 'Invalid --only path.'
+        case "$component" in
+            .git|.DS_Store) die "Excluded path: $only_path" ;;
+        esac
+        if ((first)); then
+            case "$component" in
+                README.md|.gitignore|install.sh) die "Excluded path: $only_path" ;;
+            esac
+        fi
+        current="$current/$component"
+        if [[ $remaining != */* ]]; then break; fi
+        [[ -d $current && ! -L $current ]] || die "Not a directory within the repository: $current"
+        remaining=${remaining#*/}
+        first=0
+    done
+    [[ -e $current || -L $current ]] || die "Path not found: $only_path"
+    source_path="$repo_dir/./$only_path"
+    relative=(--relative)
+fi
+
+printf 'Source: %s\nTarget: %s\n' "$source_path" "$target_dir"
 
 # Compare contents rather than only timestamps/sizes. Preserve file timestamps
 # and executability without copying ownership or changing existing directory
@@ -78,4 +120,5 @@ rsync \
     --exclude='/.gitignore' \
     --exclude='/install.sh' \
     "${dry_run[@]}" \
-    -- "$repo_dir/" "$target_dir/"
+    "${relative[@]}" \
+    -- "$source_path" "$target_dir/"
