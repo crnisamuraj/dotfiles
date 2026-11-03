@@ -105,7 +105,8 @@ printf 'Source: %s\nTarget: %s\n' "$source_path" "$target_dir"
 # Compare contents rather than only timestamps/sizes. Preserve file timestamps
 # and executability without copying ownership or changing existing directory
 # permissions/timestamps. Do not add --delete or --force: home may contain data
-# that is absent from this repository.
+# that is absent from this repository. Guard empty array expansions for Bash 3.2
+# (the macOS default), which otherwise treats them as unset under nounset.
 rsync \
     --recursive \
     --links \
@@ -119,6 +120,6 @@ rsync \
     --exclude='/README.md' \
     --exclude='/.gitignore' \
     --exclude='/install.sh' \
-    "${dry_run[@]}" \
-    "${relative[@]}" \
+    ${dry_run[@]+"${dry_run[@]}"} \
+    ${relative[@]+"${relative[@]}"} \
     -- "$source_path" "$target_dir/"
