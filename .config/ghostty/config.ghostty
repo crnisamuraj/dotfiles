@@ -1,8 +1,8 @@
-keybind = global:cmd+option=toggle_quick_terminal
+keybind = global:ctrl+option+space=toggle_quick_terminal
 
 macos-hidden = always
 
-background-opacity = 0.66
+background-opacity = 0.36
 background-blur = true
 
 # quick terminal
