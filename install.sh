@@ -57,8 +57,8 @@ done
 command -v rsync >/dev/null 2>&1 || die 'rsync is required but was not found.'
 [[ -n $target_dir && -d $target_dir ]] || die 'The target must be an existing directory.'
 
-# Resolve both paths so invocation from another directory works and rsync uses
-# local absolute paths, even when a directory name contains a colon.
+# Resolve both paths so invocation from another directory works and the target
+# remains a local absolute path, even when a directory name contains a colon.
 repo_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
 target_dir=$(cd -- "$target_dir" && pwd -P)
 
@@ -67,6 +67,7 @@ case "$target_dir/" in
 esac
 
 source_path="$repo_dir/"
+display_source=$source_path
 relative=()
 if [[ -n $only_path ]]; then
     [[ $only_path != /* ]] || die '--only must be a repository-relative path.'
@@ -96,11 +97,15 @@ if [[ -n $only_path ]]; then
         first=0
     done
     [[ -e $current || -L $current ]] || die "Path not found: $only_path"
-    source_path="$repo_dir/./$only_path"
+    # openrsync does not reliably handle an absolute source with /./ and
+    # --relative. Start from the repository and use a local relative path.
+    source_path="./$only_path"
+    display_source="$repo_dir/$only_path"
     relative=(--relative)
 fi
 
-printf 'Source: %s\nTarget: %s\n' "$source_path" "$target_dir"
+printf 'Source: %s\nTarget: %s\n' "$display_source" "$target_dir"
+cd -- "$repo_dir"
 
 # Compare contents rather than only timestamps/sizes. Preserve file timestamps
 # and executability without copying ownership or changing existing directory
