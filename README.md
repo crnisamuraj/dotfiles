@@ -47,5 +47,15 @@ are retained. New entries use the source permissions subject to the local umask.
 Non-empty destination directories are never forcibly removed to replace them
 with files or symlinks; these conflicts produce an error.
 
+Before installation, the script shows diffs for existing files with different
+contents. Changes that only add lines are installed without a prompt; changes
+that remove or modify lines, binary changes, and entry type or symlink changes
+require confirmation. Executability changes are also reported. `--dry-run` shows
+the review without prompting or writing.
+Use `--approve-all` to skip confirmation (the review is still shown), for example
+`./install.sh --approve-all`. Declining or providing no input aborts the entire
+installation before anything is copied. The installer also refuses source paths
+that would overwrite the repository itself or replace one of its parent directories.
+
 Installation overwrites matching files without backups. It does not install
 packages, run application hooks, or restart services.
