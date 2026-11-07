@@ -1,0 +1,337 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "finalize",
+  "status": "pass",
+  "type": "explainer",
+  "quality": "showcase",
+  "startedAt": "2026-11-07T01:51:56.871Z",
+  "specification": {
+    "path": "/var/mnt/data/Projects/github/crnisamuraj/dotfiles/.archify/explainer-dotfiles-installer-20261107-024408/candidate.archify.md",
+    "sha256": "c40e5bc84cfa02ce5a7b3d559dc636fc75b0a0aa52d4fc3e0ee330fc3a5897bc",
+    "bytes": 10456
+  },
+  "artifact": {
+    "path": "/var/mnt/data/Projects/github/crnisamuraj/dotfiles/.archify/explainer-dotfiles-installer-20261107-024408/dotfiles-installer.html",
+    "sha256": "71f5c5566c18795114a00fc45aa8716a60e3542c3ce0065944e61cdfa61c0083",
+    "bytes": 599990
+  },
+  "stages": {
+    "browser-check": {
+      "status": "not-run",
+      "execution": "not-requested"
+    },
+    "validate": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": null,
+      "execution": "embedded-in-deliver",
+      "command": [
+        "/usr/bin/node",
+        "/home/vudu/.agents/skills/archify/bin/archify.mjs",
+        "deliver",
+        "explainer",
+        "/var/mnt/data/Projects/github/crnisamuraj/dotfiles/.archify/explainer-dotfiles-installer-20261107-024408/candidate.archify.md",
+        "/var/mnt/data/Projects/github/crnisamuraj/dotfiles/.archify/explainer-dotfiles-installer-20261107-024408/dotfiles-installer.html",
+        "--quality",
+        "showcase",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": true,
+        "command": "validate",
+        "specification": {
+          "sha256": "c40e5bc84cfa02ce5a7b3d559dc636fc75b0a0aa52d4fc3e0ee330fc3a5897bc",
+          "bytes": 10456
+        },
+        "validation": {
+          "checksPassed": 4,
+          "checkCount": 4,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 0
+        }
+      }
+    },
+    "deliver": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 391,
+      "command": [
+        "/usr/bin/node",
+        "/home/vudu/.agents/skills/archify/bin/archify.mjs",
+        "deliver",
+        "explainer",
+        "/var/mnt/data/Projects/github/crnisamuraj/dotfiles/.archify/explainer-dotfiles-installer-20261107-024408/candidate.archify.md",
+        "/var/mnt/data/Projects/github/crnisamuraj/dotfiles/.archify/explainer-dotfiles-installer-20261107-024408/dotfiles-installer.html",
+        "--quality",
+        "showcase",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "receiptId": "82c4ee43-a785-4384-992e-46de2a149787",
+        "ok": true,
+        "command": "deliver",
+        "type": "explainer",
+        "input": "/var/mnt/data/Projects/github/crnisamuraj/dotfiles/.archify/explainer-dotfiles-installer-20261107-024408/candidate.archify.md",
+        "output": "/var/mnt/data/Projects/github/crnisamuraj/dotfiles/.archify/explainer-dotfiles-installer-20261107-024408/dotfiles-installer.html",
+        "explainer": {
+          "preparedSha256": "a46d8afd7ab8a19ec6ecd832e3aebc14a3ac0d7e3ae65cf029c3b4f7eca9f18f",
+          "dependencies": [
+            {
+              "kind": "diagram-spec",
+              "id": "install-flow",
+              "inline": true,
+              "sha256": "1ef15458fdcb90afb10727853ec866a2e7b5bfb4cccec4f002c3adcb302a7648",
+              "bytes": 1373
+            }
+          ]
+        },
+        "specification": {
+          "sha256": "c40e5bc84cfa02ce5a7b3d559dc636fc75b0a0aa52d4fc3e0ee330fc3a5897bc",
+          "bytes": 10456
+        },
+        "artifact": {
+          "sha256": "71f5c5566c18795114a00fc45aa8716a60e3542c3ce0065944e61cdfa61c0083",
+          "bytes": 599990
+        },
+        "validation": {
+          "checksPassed": 4,
+          "checkCount": 4,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 0
+        },
+        "update": {
+          "status": "unavailable",
+          "installedVersion": null,
+          "availableVersion": null,
+          "releaseNotes": null,
+          "checkedAt": null,
+          "source": null,
+          "noticeRequired": false,
+          "noticeText": null,
+          "reason": "disabled"
+        }
+      }
+    },
+    "check": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 179,
+      "command": [
+        "/usr/bin/node",
+        "/home/vudu/.agents/skills/archify/bin/archify.mjs",
+        "check",
+        "/var/mnt/data/Projects/github/crnisamuraj/dotfiles/.archify/explainer-dotfiles-installer-20261107-024408/dotfiles-installer.html",
+        "--require-provenance"
+      ],
+      "receipt": {
+        "ok": true,
+        "file": "/var/mnt/data/Projects/github/crnisamuraj/dotfiles/.archify/explainer-dotfiles-installer-20261107-024408/dotfiles-installer.html",
+        "family": "explainer",
+        "artifact": {
+          "sha256": "71f5c5566c18795114a00fc45aa8716a60e3542c3ce0065944e61cdfa61c0083",
+          "bytes": 599990
+        },
+        "checks": [
+          {
+            "name": "explainer_structure",
+            "ok": true,
+            "details": [
+              "83 unique DOM IDs"
+            ]
+          },
+          {
+            "name": "explainer_payload_identity",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "explainer_dependencies",
+            "ok": true,
+            "details": [
+              "1 frozen dependencies"
+            ]
+          },
+          {
+            "name": "explainer_native_diagrams",
+            "ok": true,
+            "details": [
+              "install-flow: pass"
+            ]
+          }
+        ],
+        "composition": {
+          "schemaVersion": 1,
+          "profile": "showcase",
+          "status": "pass",
+          "summary": {
+            "errors": 0,
+            "warnings": 0
+          },
+          "issues": [],
+          "nativeDiagrams": [
+            {
+              "id": "install-flow",
+              "receipt": {
+                "ok": true,
+                "file": "/tmp/archify-explainer-check-oJS9Sy/child.html",
+                "artifact": {
+                  "sha256": "e2129e9408fabb111cc55aba9490ee07f406af1c6d4d3d4b5662b2bad2409b82",
+                  "bytes": 834517
+                },
+                "checks": [
+                  {
+                    "name": "single_svg",
+                    "ok": true,
+                    "details": [
+                      "found 1 <svg> block(s)"
+                    ]
+                  },
+                  {
+                    "name": "finite_svg",
+                    "ok": true,
+                    "details": []
+                  },
+                  {
+                    "name": "orthogonal_arrows",
+                    "ok": true,
+                    "details": []
+                  },
+                  {
+                    "name": "label_route_clearance",
+                    "ok": true,
+                    "details": []
+                  },
+                  {
+                    "name": "relationship_crossings",
+                    "ok": true,
+                    "details": []
+                  },
+                  {
+                    "name": "relationship_corridors",
+                    "ok": true,
+                    "details": []
+                  },
+                  {
+                    "name": "container_border_runs",
+                    "ok": true,
+                    "details": []
+                  },
+                  {
+                    "name": "route_rhythm",
+                    "ok": true,
+                    "details": []
+                  },
+                  {
+                    "name": "legend_clearance",
+                    "ok": true,
+                    "details": []
+                  }
+                ],
+                "composition": {
+                  "schemaVersion": 1,
+                  "profile": "showcase",
+                  "status": "pass",
+                  "summary": {
+                    "errors": 0,
+                    "warnings": 0
+                  },
+                  "metrics": {
+                    "properCrossings": 0,
+                    "resolvedCrossovers": 0,
+                    "ambiguousCorridors": 0,
+                    "arrowheadCollisions": 0,
+                    "containerBorderRuns": 0,
+                    "labelRouteClearanceIssues": 0,
+                    "labelCanvasOverflowIssues": 0,
+                    "minLabelRouteClearance": 40,
+                    "desktopReadabilityIssues": 0,
+                    "viewportHeightIssues": 0,
+                    "minProjectedNodeTextPx": 6.452732003469211,
+                    "maxBends": 0,
+                    "routesOverSuggestedBends": 0,
+                    "maxStretch": 1,
+                    "routesOverSuggestedStretch": 0,
+                    "minSegmentPx": 19,
+                    "minInteriorSegmentPx": null,
+                    "shortSegmentCount": 0,
+                    "shortEndpointSegmentCount": 0,
+                    "shortInteriorSegmentCount": 0,
+                    "microSegmentCount": 0
+                  },
+                  "suggestedLimits": {
+                    "bendsPerRelationship": 2,
+                    "stretch": 1.35,
+                    "segmentPx": 16,
+                    "microSegmentPx": 8
+                  },
+                  "routeReview": {
+                    "crossings": [],
+                    "detours": []
+                  },
+                  "leadingSpace": {
+                    "measured": false,
+                    "reviewSuggested": false
+                  },
+                  "desktopReadability": {
+                    "budgetBasis": "legacy-930",
+                    "readerContract": "declared-wide-v1",
+                    "availableDiagramWidth": 930,
+                    "actualBudgetPx": 930,
+                    "limit": "legacy",
+                    "requestedTargetPx": null,
+                    "requestedTargetMet": null,
+                    "hardFloorPx": 6,
+                    "hardFloorMet": true,
+                    "minimumOwner": {
+                      "kind": "edge",
+                      "id": "approve-to-abort-1",
+                      "from": "approve",
+                      "to": "abort"
+                    },
+                    "minimumSourceTextPx": 8,
+                    "minimumProjectedTextPx": 6.452732003469211,
+                    "semanticTextCount": 12
+                  },
+                  "issues": []
+                }
+              }
+            }
+          ]
+        },
+        "diagnostics": [],
+        "provenance": "current",
+        "deliveryReceiptId": "82c4ee43-a785-4384-992e-46de2a149787"
+      }
+    }
+  },
+  "browserCheck": {
+    "requested": false,
+    "ran": false
+  },
+  "diagnostics": [],
+  "evidence": {
+    "receipt": "/var/mnt/data/Projects/github/crnisamuraj/dotfiles/.archify/explainer-dotfiles-installer-20261107-024408/dotfiles-installer.finalize.json",
+    "summaryReceipt": "/var/mnt/data/Projects/github/crnisamuraj/dotfiles/.archify/explainer-dotfiles-installer-20261107-024408/dotfiles-installer.finalize-summary.json"
+  },
+  "visualReview": "not-requested",
+  "finishedAt": "2026-11-07T01:51:57.567Z",
+  "durationMs": 695,
+  "update": {
+    "status": "unavailable",
+    "installedVersion": null,
+    "availableVersion": null,
+    "releaseNotes": null,
+    "checkedAt": null,
+    "source": null,
+    "noticeRequired": false,
+    "noticeText": null,
+    "reason": "cache-unavailable"
+  }
+}

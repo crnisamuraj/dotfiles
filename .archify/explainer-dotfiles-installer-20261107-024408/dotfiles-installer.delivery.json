@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "82c4ee43-a785-4384-992e-46de2a149787",
+  "status": "current",
+  "command": "deliver",
+  "type": "explainer",
+  "input": "/var/mnt/data/Projects/github/crnisamuraj/dotfiles/.archify/explainer-dotfiles-installer-20261107-024408/candidate.archify.md",
+  "output": "/var/mnt/data/Projects/github/crnisamuraj/dotfiles/.archify/explainer-dotfiles-installer-20261107-024408/dotfiles-installer.html",
+  "specification": {
+    "sha256": "c40e5bc84cfa02ce5a7b3d559dc636fc75b0a0aa52d4fc3e0ee330fc3a5897bc",
+    "bytes": 10456
+  },
+  "artifact": {
+    "sha256": "71f5c5566c18795114a00fc45aa8716a60e3542c3ce0065944e61cdfa61c0083",
+    "bytes": 599990
+  },
+  "explainer": {
+    "preparedSha256": "a46d8afd7ab8a19ec6ecd832e3aebc14a3ac0d7e3ae65cf029c3b4f7eca9f18f",
+    "dependencies": [
+      {
+        "kind": "diagram-spec",
+        "id": "install-flow",
+        "inline": true,
+        "sha256": "1ef15458fdcb90afb10727853ec866a2e7b5bfb4cccec4f002c3adcb302a7648",
+        "bytes": 1373
+      }
+    ]
+  }
+}

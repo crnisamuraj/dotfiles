@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "finalize",
+  "status": "pass",
+  "type": "explainer",
+  "quality": "showcase",
+  "specification": {
+    "path": "/var/mnt/data/Projects/github/crnisamuraj/dotfiles/.archify/explainer-dotfiles-installer-20261107-024408/candidate.archify.md",
+    "sha256": "c40e5bc84cfa02ce5a7b3d559dc636fc75b0a0aa52d4fc3e0ee330fc3a5897bc",
+    "bytes": 10456
+  },
+  "artifact": {
+    "path": "/var/mnt/data/Projects/github/crnisamuraj/dotfiles/.archify/explainer-dotfiles-installer-20261107-024408/dotfiles-installer.html",
+    "sha256": "71f5c5566c18795114a00fc45aa8716a60e3542c3ce0065944e61cdfa61c0083",
+    "bytes": 599990
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "not-run"
+  },
+  "diagnostics": [],
+  "diagnosticSummary": {
+    "total": 0,
+    "shown": 0,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "/var/mnt/data/Projects/github/crnisamuraj/dotfiles/.archify/explainer-dotfiles-installer-20261107-024408/dotfiles-installer.finalize.json",
+    "summaryReceipt": "/var/mnt/data/Projects/github/crnisamuraj/dotfiles/.archify/explainer-dotfiles-installer-20261107-024408/dotfiles-installer.finalize-summary.json"
+  },
+  "visualReview": "not-requested",
+  "durationMs": 695,
+  "browserCheck": {
+    "requested": false,
+    "ran": false
+  }
+}
