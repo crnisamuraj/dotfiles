@@ -30,10 +30,14 @@ repository root. Its path under the destination stays the same:
 The usual exclusions still apply. `--only` does not follow symlinks in parent
 directories; a selected symlink itself is copied as a symlink.
 
-By default, the installer copies all repository contents, including hidden and untracked
-files, except `.git`, `.DS_Store`, and the root `README.md`, `.gitignore`, and
-`install.sh`. Nested files with those last three names are copied normally.
-Git ignore rules do not determine what gets installed.
+By default, the installer copies all repository contents, including hidden and
+untracked files, except those matching the root `.installignore`. Add one rsync
+exclude pattern per line to ignore other paths; for example, `/private/` excludes
+the root `private` directory and `*.tmp` excludes matching files at any depth.
+These are rsync patterns, not Git ignore rules. The initial file excludes `.git`,
+`.DS_Store`, and the root `README.md`, `.gitignore`, and `install.sh`. The root
+`.installignore` and `.git` entries are always excluded, even if their rules are
+removed. Exclusions also apply to `--only` and the pre-install review.
 
 Directories are merged and matching files are overwritten with the repository
 version. Files and subdirectories that exist only in the destination are kept,

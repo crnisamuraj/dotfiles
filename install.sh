@@ -14,7 +14,8 @@ and overwriting matching files. Destination-only files are never deleted.
   --only PATH   Install only this repository-relative file or directory.
   -h, --help    Show this help.
 
-Excluded: .git, .DS_Store, and the root README.md, .gitignore, and install.sh.
+Exclusions are read from the root .installignore (rsync exclude patterns).
+The root .installignore and all .git directories are always excluded.
 Requires Bash and rsync. No software is installed and no services are restarted.
 EOF
 }
@@ -83,26 +84,16 @@ if [[ -n $only_path ]]; then
     while [[ $only_path == */ ]]; do only_path=${only_path%/}; done
     [[ -n $only_path && $only_path != . ]] || die '--only requires a file or directory within the repository.'
 
-    # Reject traversal and excluded components, and never traverse symlinks.
+    # Reject traversal and never traverse symlinks in parent directories.
     remaining=$only_path
     current=$repo_dir
-    first=1
     while :; do
         component=${remaining%%/*}
         [[ -n $component && $component != . && $component != .. ]] || die 'Invalid --only path.'
-        case "$component" in
-            .git|.DS_Store) die "Excluded path: $only_path" ;;
-        esac
-        if ((first)); then
-            case "$component" in
-                README.md|.gitignore|install.sh) die "Excluded path: $only_path" ;;
-            esac
-        fi
         current="$current/$component"
         if [[ $remaining != */* ]]; then break; fi
         [[ -d $current && ! -L $current ]] || die "Not a directory within the repository: $current"
         remaining=${remaining#*/}
-        first=0
     done
     [[ -e $current || -L $current ]] || die "Path not found: $only_path"
     # openrsync does not reliably handle an absolute source with /./ and
@@ -122,12 +113,6 @@ review_entry() {
     local path=$1 dest parent component rest diff_status source_link dest_link source_exec dest_exec
     path=${path#./}
     [[ $path != . ]] || return 0
-    case "/$path/" in
-        */.git/*|*/.DS_Store/*) return 0 ;;
-    esac
-    case "$path" in
-        README.md|.gitignore|install.sh) return 0 ;;
-    esac
     dest="$target_dir/$path"
     # Refuse entries that would write into the repository, or replace one of
     # its ancestor directories. The target itself may legitimately be $HOME.
@@ -201,27 +186,48 @@ case "$temp_dir/" in
         ;;
 esac
 diff_file=$(mktemp "$temp_dir/dotfiles-diff.XXXXXXXX") || die 'Cannot create temporary diff file.'
-trap 'rm -f -- "$diff_file" "${entries_file:-}"' EXIT
+trap 'rm -f -- "$diff_file" "${entries_file:-}"; if [[ -n ${listing_dir:-} ]]; then rmdir -- "$listing_dir"; fi' EXIT
 entries_file=$(mktemp "$temp_dir/dotfiles-entries.XXXXXXXX") || die 'Cannot create temporary file list.'
-if [[ -n $only_path ]]; then
-    # --relative also transfers parent directories, which can replace existing
-    # non-directories at the destination before the selected entry is copied.
-    remaining=$only_path
-    parent_path=
-    while [[ $remaining == */* ]]; do
-        component=${remaining%%/*}
-        parent_path="${parent_path:+$parent_path/}$component"
-        review_entry "$parent_path"
-        remaining=${remaining#*/}
-    done
-    review_root="./$only_path"
-else
-    review_root=.
+listing_dir=$(mktemp -d "$temp_dir/dotfiles-listing.XXXXXXXX") || die 'Cannot create temporary listing directory.'
+
+# Keep mandatory safety exclusions ahead of user rules, which may include
+# rsync include rules. The same filters must be used for review and transfer.
+filters=(--exclude='.git' --exclude='/.installignore')
+if [[ -f $repo_dir/.installignore ]]; then
+    filters+=("--exclude-from=$repo_dir/.installignore")
 fi
-find "$review_root" \( -name .git -o -name .DS_Store \) -prune -o -print0 > "$entries_file" || die 'Cannot enumerate source files for review.'
-while IFS= read -r -d '' entry; do
+
+# A dry run against an empty directory lists every selected entry, even when
+# the real destination already contains identical files. Rsync escapes control
+# characters as \#ooo in names; decode those without interpreting other
+# backslashes so unusual filenames are reviewed correctly.
+LC_ALL=C rsync --recursive --links --dry-run --out-format='%n' \
+    "${filters[@]}" -- "$repo_dir/" "$listing_dir/" > "$entries_file" || die 'Cannot enumerate source files for review.'
+selected=0
+while IFS= read -r encoded; do
+    entry=
+    while [[ $encoded =~ \\\#[0-7][0-7][0-7] ]]; do
+        prefix=${encoded%%"${BASH_REMATCH[0]}"*}
+        encoded=${encoded#"$prefix"}
+        octal=${encoded:2:3}
+        printf -v decoded '%b' "\\0$octal"
+        entry="$entry$prefix$decoded"
+        encoded=${encoded:5}
+    done
+    entry="$entry$encoded"
+    entry=${entry%/}
+    entry=${entry#./}
+    if [[ -n $only_path ]]; then
+        if [[ $entry == "$only_path" ]]; then selected=1; fi
+        # Review the selected tree and its implied parent directories only.
+        case "$entry/" in
+            "$only_path/"* ) ;;
+            *) case "$only_path/" in "$entry/"*) ;; *) continue ;; esac ;;
+        esac
+    fi
     review_entry "$entry"
 done < "$entries_file"
+if [[ -n $only_path && $selected == 0 ]]; then die "Excluded path: $only_path"; fi
 
 if ((needs_approval && !approve_all && !is_dry_run)); then
     printf '\nChanges include modifications, removals, or entry replacements. Approve installation? [y/N] '
@@ -245,11 +251,7 @@ rsync \
     --omit-dir-times \
     --checksum \
     --itemize-changes \
-    --exclude='.git' \
-    --exclude='.DS_Store' \
-    --exclude='/README.md' \
-    --exclude='/.gitignore' \
-    --exclude='/install.sh' \
+    "${filters[@]}" \
     ${dry_run[@]+"${dry_run[@]}"} \
     ${relative[@]+"${relative[@]}"} \
     -- "$source_path" "$target_dir/"
