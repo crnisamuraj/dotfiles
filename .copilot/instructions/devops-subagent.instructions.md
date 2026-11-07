@@ -18,7 +18,8 @@ this file's title or the worker's configured model.
 
 The user may disable handoffs at any time. If the main model changes,
 re-check eligibility before any further handoff. Enabling handoffs does
-not authorize commands, edits, or live queries.
+not authorize state-changing actions; the approval boundaries in the working
+agreements still apply.
 
 Delegated workers must complete their assigned work directly and must
 not apply this orchestration policy to create additional workers.
@@ -37,9 +38,11 @@ Keep trivial lookups and small tasks direct when delegation would cost more.
 
 Give the worker a bounded objective, workspace/ref/run identifiers, relevant
 decisions, explicit authorized/prohibited actions, and acceptance criteria.
-Repository/documentation reads are allowed; commands, edits, and live queries
-need the user's scoped approval. Delegation never supplies missing approval.
-Pass the constraints, not the entire conversation or bulk logs.
+Repository/documentation reads, safe read-only commands, and safe read-only local
+or remote system inspection are allowed without additional approval;
+state-changing actions need the user's scoped approval. Delegation never
+supplies missing approval. Pass the constraints, not the entire conversation
+or bulk logs.
 
 Use the native custom subagent when available. For repository execution from
 an app chat, use an authorized isolated project session with the same agent,
@@ -48,6 +51,9 @@ agent is not loaded but explicit model/effort overrides are available, a
 general-purpose Sol High worker may read
 `~/.copilot/agents/devops-sol.agent.md` and follow its instructions. Do not
 silently substitute Astra or another model; disclose a capability blocker.
+Verify that the worker actually uses `gpt-6.1-sol` with High effort. If runtime
+overrides or Auto routing prevent that, report a blocker rather than accepting
+a silent model or effort substitution. Do not change the main session's settings.
 
 Prefer one coherent worker task and synchronous execution. Parallelize only
 independent scopes with real concurrent work; never duplicate an active worker's
