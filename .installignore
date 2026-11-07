@@ -1,0 +1,7 @@
+# Rsync exclude patterns, relative to the repository root where anchored.
+.git
+.DS_Store
+/README.md
+/.gitignore
+/install.sh
+.archify
